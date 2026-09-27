@@ -38,6 +38,7 @@ SUPPORTED / CONTRADICTED / REVIEW
 - `uars_v06_hybrid_dev.py` — optional external semantic judge over a subprocess JSON contract with exact-quote validation and abstention rules.
 - `test_uars_v06_preflight.py` — preflight safety checks.
 - `test_uars_v06_hybrid_dev.py` — quote, abstention and temporal-boundary checks.
+- `uars_v06_extract_v2_dev.py` / `test_uars_v06_extract_v2_dev.py` — open-development candidate ID and decisive-text validation. Repeated exact text or a Unicode normalization mismatch fails closed to REVIEW; no blind claims or labels are included.
 
 The current code uses the Python standard library only.
 
