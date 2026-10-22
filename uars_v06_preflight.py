@@ -61,12 +61,11 @@ def top_k(query, fragments, k=5):
 
 
 def conservative_baseline(claim_text, full_text):
-    """One safe rule; semantic labels require a separately specified mechanism."""
-    index = full_text.casefold().find(claim_text.casefold())
-    if index >= 0 and claim_text.strip():
-        return {"support_label": "SUPPORTED", "source_role": "UNKNOWN",
-                "evidence_span": full_text[index:index + len(claim_text)],
-                "span_start": index, "reason": "exact_claim_substring"}
+    """A substring is a retrieval hint, never proof of semantic support.
+
+    Negation, quoted false claims and conditional statements can all contain the
+    claim verbatim. Casefolding can also change codepoint lengths and offsets.
+    """
     return {"support_label": "REVIEW", "source_role": "UNKNOWN",
             "evidence_span": None, "span_start": None,
             "reason": "semantic_relation_not_established_by_exact_match_baseline"}

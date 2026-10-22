@@ -1,0 +1,210 @@
+{
+  "version": "0.7.0-assisted",
+  "run_id": "67ed03f6734c3bffdda94cf1a7bd5fea672e6b8cd6e9a122b66bab635c699595",
+  "configuration": {
+    "batch": {
+      "sources": [
+        {
+          "id": "spec",
+          "path": "specification.txt",
+          "source_url": "urn:uars:fictional:DemoSensor-R1",
+          "sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21"
+        }
+      ],
+      "claims": [
+        {
+          "id": "RND-001",
+          "text": "At 5 V the sensor supports a sampling rate of 100 Hz.",
+          "source_id": "spec",
+          "scope": "document_content"
+        },
+        {
+          "id": "RND-002",
+          "text": "At 3.3 V the sensor supports a sampling rate of 100 Hz.",
+          "source_id": "spec",
+          "scope": "document_content"
+        },
+        {
+          "id": "RND-003",
+          "text": "The sensor supports wireless communication.",
+          "source_id": "spec",
+          "scope": "document_content"
+        },
+        {
+          "id": "RND-004",
+          "text": "The sensor weighs 10 grams.",
+          "source_id": "spec",
+          "scope": "document_content"
+        }
+      ]
+    },
+    "sources": {
+      "spec": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21"
+    },
+    "mechanism": "0.7.0-assisted",
+    "prompt_sha256": "0887ef9d7ec7162a7dea219ebc0a4ebd08303a3fda1da3fb97f3d3dfc451e0b1",
+    "retrieval": {
+      "window": 200,
+      "overlap": 50,
+      "top_k": 5
+    },
+    "judge": {
+      "command": null,
+      "model_id": null,
+      "model_digest": null
+    },
+    "timeout": 60
+  },
+  "created_utc": "2026-10-22T19:11:27.693890+00:00",
+  "semantic_quality_measured": false,
+  "results": [
+    {
+      "claim": {
+        "id": "RND-001",
+        "text": "At 5 V the sensor supports a sampling rate of 100 Hz.",
+        "source_id": "spec",
+        "scope": "document_content"
+      },
+      "source_sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21",
+      "source_url": "urn:uars:fictional:DemoSensor-R1",
+      "support_label": "SUPPORTED",
+      "system_outcome": "DECIDED",
+      "reason": "The rate and voltage condition agree.",
+      "proposal": null,
+      "candidates": [
+        {
+          "start": 0,
+          "end": 273,
+          "score": 1.0,
+          "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n",
+          "id": "C00"
+        }
+      ],
+      "decisive_span": {
+        "start": 103,
+        "end": 174,
+        "text": "The sensor supports a sampling rate of 100 Hz only when powered at 5 V."
+      },
+      "context_span": {
+        "start": 0,
+        "end": 273,
+        "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n"
+      },
+      "review": {
+        "reviewer": "Synthetic reference fixture; not independent human evaluation",
+        "reviewed_utc": "2026-10-22T19:11:27.741070+00:00",
+        "method": "reviewer_attestation"
+      }
+    },
+    {
+      "claim": {
+        "id": "RND-002",
+        "text": "At 3.3 V the sensor supports a sampling rate of 100 Hz.",
+        "source_id": "spec",
+        "scope": "document_content"
+      },
+      "source_sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21",
+      "source_url": "urn:uars:fictional:DemoSensor-R1",
+      "support_label": "CONTRADICTED",
+      "system_outcome": "DECIDED",
+      "reason": "The document limits the rate to 50 Hz at 3.3 V.",
+      "proposal": null,
+      "candidates": [
+        {
+          "start": 0,
+          "end": 273,
+          "score": 1.0,
+          "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n",
+          "id": "C00"
+        }
+      ],
+      "decisive_span": {
+        "start": 175,
+        "end": 220,
+        "text": "At 3.3 V, the maximum sampling rate is 50 Hz."
+      },
+      "context_span": {
+        "start": 0,
+        "end": 273,
+        "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n"
+      },
+      "review": {
+        "reviewer": "Synthetic reference fixture; not independent human evaluation",
+        "reviewed_utc": "2026-10-22T19:11:27.741087+00:00",
+        "method": "reviewer_attestation"
+      }
+    },
+    {
+      "claim": {
+        "id": "RND-003",
+        "text": "The sensor supports wireless communication.",
+        "source_id": "spec",
+        "scope": "document_content"
+      },
+      "source_sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21",
+      "source_url": "urn:uars:fictional:DemoSensor-R1",
+      "support_label": "CONTRADICTED",
+      "system_outcome": "DECIDED",
+      "reason": "The document explicitly excludes wireless support.",
+      "proposal": null,
+      "candidates": [
+        {
+          "start": 0,
+          "end": 273,
+          "score": 1.0,
+          "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n",
+          "id": "C00"
+        }
+      ],
+      "decisive_span": {
+        "start": 221,
+        "end": 272,
+        "text": "The sensor does not support wireless communication."
+      },
+      "context_span": {
+        "start": 0,
+        "end": 273,
+        "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n"
+      },
+      "review": {
+        "reviewer": "Synthetic reference fixture; not independent human evaluation",
+        "reviewed_utc": "2026-10-22T19:11:27.741092+00:00",
+        "method": "reviewer_attestation"
+      }
+    },
+    {
+      "claim": {
+        "id": "RND-004",
+        "text": "The sensor weighs 10 grams.",
+        "source_id": "spec",
+        "scope": "document_content"
+      },
+      "source_sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21",
+      "source_url": "urn:uars:fictional:DemoSensor-R1",
+      "support_label": "INSUFFICIENT",
+      "system_outcome": "DECIDED",
+      "reason": "No mass is specified anywhere in this complete short fixture.",
+      "proposal": null,
+      "candidates": [
+        {
+          "start": 0,
+          "end": 273,
+          "score": 0.4,
+          "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n",
+          "id": "C00"
+        }
+      ],
+      "decisive_span": null,
+      "context_span": {
+        "start": 0,
+        "end": 273,
+        "text": "UARS demonstration fixture — fictional equipment, not a real product datasheet.\nDevice: DemoSensor R1.\nThe sensor supports a sampling rate of 100 Hz only when powered at 5 V.\nAt 3.3 V, the maximum sampling rate is 50 Hz.\nThe sensor does not support wireless communication.\n"
+      },
+      "review": {
+        "reviewer": "Synthetic reference fixture; not independent human evaluation",
+        "reviewed_utc": "2026-10-22T19:11:27.741096+00:00",
+        "method": "reviewer_attestation"
+      }
+    }
+  ]
+}

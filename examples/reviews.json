@@ -1,0 +1,43 @@
+{
+  "run_id": "67ed03f6734c3bffdda94cf1a7bd5fea672e6b8cd6e9a122b66bab635c699595",
+  "reviews": [
+    {
+      "claim_id": "RND-001",
+      "support_label": "SUPPORTED",
+      "reviewer": "Synthetic reference fixture; not independent human evaluation",
+      "reason": "The rate and voltage condition agree.",
+      "context_start": 0,
+      "context_end": 273,
+      "decisive_start": 103,
+      "decisive_end": 174
+    },
+    {
+      "claim_id": "RND-002",
+      "support_label": "CONTRADICTED",
+      "reviewer": "Synthetic reference fixture; not independent human evaluation",
+      "reason": "The document limits the rate to 50 Hz at 3.3 V.",
+      "context_start": 0,
+      "context_end": 273,
+      "decisive_start": 175,
+      "decisive_end": 220
+    },
+    {
+      "claim_id": "RND-003",
+      "support_label": "CONTRADICTED",
+      "reviewer": "Synthetic reference fixture; not independent human evaluation",
+      "reason": "The document explicitly excludes wireless support.",
+      "context_start": 0,
+      "context_end": 273,
+      "decisive_start": 221,
+      "decisive_end": 272
+    },
+    {
+      "claim_id": "RND-004",
+      "support_label": "INSUFFICIENT",
+      "reviewer": "Synthetic reference fixture; not independent human evaluation",
+      "reason": "No mass is specified anywhere in this complete short fixture.",
+      "context_start": 0,
+      "context_end": 273
+    }
+  ]
+}
