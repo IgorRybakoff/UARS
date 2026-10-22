@@ -14,3 +14,17 @@ UARS v0.6 is a development prototype, not a production evaluator.
 8. **Current local tests validate engineering boundaries, not model accuracy.**
 
 The repository therefore reports abstention and development diagnostics explicitly instead of converting uncertainty into positive claims.
+
+## v0.7 assisted application
+
+The new `uars.py` CLI adds document verification and a reviewer attestation loop.
+Accepted labels are reviewer judgments, not independently proven truth. Reviewer
+identity is self-declared. No live model integration or independent semantic
+benchmark has been run. Inputs are UTF-8 text; PDF/OCR, GUI, multiple-source
+reconciliation and current-status certification are not implemented.
+
+Literal substring support has been removed from the shared v0.6 baseline because
+negation and quoted false claims can contain the claim verbatim. Historical
+exact-match results described in earlier documentation are not reliable entailment
+measurements. Legacy semantic validators remain development citation checks;
+use the assisted CLI for the new separation of proposals and accepted judgments.

@@ -1,0 +1,5 @@
+UARS demonstration fixture — fictional equipment, not a real product datasheet.
+Device: DemoSensor R1.
+The sensor supports a sampling rate of 100 Hz only when powered at 5 V.
+At 3.3 V, the maximum sampling rate is 50 Hz.
+The sensor does not support wireless communication.

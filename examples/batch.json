@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "id": "spec",
+      "path": "specification.txt",
+      "source_url": "urn:uars:fictional:DemoSensor-R1",
+      "sha256": "e544e9555b3dc9c79ee1d49333b6bfb690e49cbcf44e956088cbb58cf1b15e21"
+    }
+  ],
+  "claims": [
+    {
+      "id": "RND-001",
+      "text": "At 5 V the sensor supports a sampling rate of 100 Hz.",
+      "source_id": "spec",
+      "scope": "document_content"
+    },
+    {
+      "id": "RND-002",
+      "text": "At 3.3 V the sensor supports a sampling rate of 100 Hz.",
+      "source_id": "spec",
+      "scope": "document_content"
+    },
+    {
+      "id": "RND-003",
+      "text": "The sensor supports wireless communication.",
+      "source_id": "spec",
+      "scope": "document_content"
+    },
+    {
+      "id": "RND-004",
+      "text": "The sensor weighs 10 grams.",
+      "source_id": "spec",
+      "scope": "document_content"
+    }
+  ]
+}

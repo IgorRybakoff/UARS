@@ -1,69 +1,86 @@
-# UARS
+# UARS — проверка утверждений по документам
 
-**UARS — evidence-first verification framework for AI-assisted decisions.**
+**v0.7: рабочий MVP с проверкой рецензентом (assisted verification).**
+Практическая задача: сверить характеристики, условия применения и выводы
+в AI-ответе или R&D-отчёте с конкретной технической документацией.
+На выходе — JSON и читаемый Markdown с вердиктом, точной цитатой,
+контекстом, источником, SHA-256 и данными рецензента.
 
-Public status: **v0.6 development prototype**. This repository is intentionally conservative: it distinguishes engineering checks from semantic quality claims and does not present development-pilot results as blind accuracy.
+## Быстрый запуск
 
-## Current architecture
+Python 3.10+, сторонние библиотеки и API-ключи для демонстрации не нужны.
+Запускайте команды из корня репозитория:
 
-```text
-Claim + frozen evidence
-        ↓
-Evidence integrity / preflight
-        ↓
-Full-text retrieval
-        ↓
-Deterministic exact-match baseline
-        ↓
-Optional semantic judge subprocess
-        ↓
-Quote / offset validation
-        ↓
-SUPPORTED / CONTRADICTED / REVIEW
+```bash
+python -m unittest discover -v
+python uars.py verify examples/batch.json --output run.json --markdown run.md
+python uars.py review examples/batch.json --run run.json --reviews examples/reviews.json --output reviewed.json --markdown reviewed.md
 ```
 
-## Core principles
+Первый запуск оставляет 4 случая на проверку. Второй применяет **заранее
+заданные синтетические разборы**: 1 SUPPORTED, 2 CONTRADICTED,
+1 INSUFFICIENT. Это демонстрация рабочего цикла, не измерение точности модели.
+Готовый пример отчёта: [examples/report.md](examples/report.md).
 
-- Evidence is checked against frozen hashes before evaluation.
-- Blind IDs must not enter development preflight.
-- Retrieval covers the full normalized text, not just the first chunks.
-- A semantic judge cannot invent evidence: accepted positive/negative judgments require an exact quote present in retrieved evidence.
-- Top-k silence is **not** treated as proof of insufficiency.
-- `current_status` claims fail closed unless temporal validity is independently certified.
-- Development results are not reported as accuracy unless ground truth and evaluation protocol are frozen in advance.
+## Как использовать на своём документе
 
-## What is implemented
+1. Сохраните извлечённый текст спецификации в UTF-8 `.txt`. PDF/OCR и HTML
+   предварительно преобразуются отдельно; корректность извлечения проверьте.
+2. Скопируйте `examples/batch.json`: укажите документ, его источник, SHA-256,
+   список утверждений и `scope=document_content`. Путь к документу считается
+   от папки batch-файла. Один источник на утверждение.
+3. Получите hash: `python -c "import hashlib,pathlib; print(hashlib.sha256(pathlib.Path('document.txt').read_bytes()).hexdigest())"`.
+4. Запустите `verify`. В JSON будут релевантные фрагменты с точными offsets.
+   Без модели все утверждения остаются REVIEW, а support_label=null.
+5. Создайте review-файл по образцу `examples/reviews.json`, вставьте run_id
+   из своего запуска, свою идентификацию и обоснование. Укажите decisive_start,
+   decisive_end, context_start, context_end в кодовых точках исходного текста.
+   Для INSUFFICIENT требуется просмотр всего документа и полный context.
+6. Выполните `review`. Команда повторно проверит байты, состав утверждений,
+   run_id и границы цитат, затем выпустит итоговый отчёт.
 
-- `uars_v06_preflight.py` — archive/hash/split validation, full-text windowing and conservative exact-match baseline.
-- `uars_v06_hybrid_dev.py` — optional external semantic judge over a subprocess JSON contract with exact-quote validation and abstention rules.
-- `test_uars_v06_preflight.py` — preflight safety checks.
-- `test_uars_v06_hybrid_dev.py` — quote, abstention and temporal-boundary checks.
-- `uars_v06_extract_v2_dev.py` / `test_uars_v06_extract_v2_dev.py` — open-development candidate ID and decisive-text validation. Repeated exact text or a Unicode normalization mismatch fails closed to REVIEW; no blind claims or labels are included.
+Review-файл должен содержать весь набор решений, которые вы хотите принять:
+каждый вызов строит решения заново. Решения из входного отчёта не наследуются.
+Идентификация рецензента записывается как заявленная; авторизация не реализована.
 
-The current code uses the Python standard library only.
+## Подключение модели
 
-## Current evidence
+```bash
+python uars.py verify examples/batch.json --judge-command 'python local_judge.py' --model-id YOUR_MODEL --model-digest YOUR_DIGEST --timeout 60 --output run.json --markdown run.md
+```
 
-The open GR006 development pilot used 8 exposed IDs. The integrity run verified all 8 raw and normalized evidence artifacts against their recorded hashes and read **0 blind IDs**. The development harness produced two deterministic exact-substring `SUPPORTED` cases and abstained on the remaining cases when no semantic model was configured.
+`local_judge.py` — ваш адаптер, не включённый в репозиторий. Получает один JSON
+через stdin (`prompt`, `claim`, `candidates`), возвращает ровно один JSON через stdout:
 
-After connecting a local Qwen development judge, the mechanism was iterated on the already-exposed pilot. That work is useful for diagnostics only. It is **not** an independent evaluation. The current audit explicitly concludes that freeze and blind evaluation are premature.
+```json
+{"support_label":"SUPPORTED","confidence":"high","candidate_id":"C00","decisive_text":"verbatim quote from C00","reason":"explanation"}
+```
 
-## Current boundary
+Модель может вернуть REVIEW. Для положительного/отрицательного предложения
+проверяются кандидат, точная цитата и её однозначность. Предложение модели
+остаётся непринятым до review. Таймаут, сбой процесса, неверный JSON или цитата
+дают ERROR; это не INSUFFICIENT. CLI exit codes: 0 — отчёт выпущен (возможен REVIEW),
+1 — неверный ввод/целостность/запись, 2 — отчёт содержит ошибки модели.
+Семантическая модель в этом релизе вживую не проверялась.
 
-The main unresolved issue is not transport or hashing. It is semantic sufficiency: an exact substring may exist and still be insufficient to establish the claim. Before any blind evaluation, UARS needs:
+## Что исправлено
 
-1. a frozen annotation contract;
-2. a fresh open development set outside the existing blind pool;
-3. predeclared metrics separating coverage, conditional accuracy, false support/contradiction, quote quality and abstention reasons;
-4. an audit of decisive span **plus context span**;
-5. a frozen model/prompt/retrieval/policy configuration.
+Буквальное совпадение больше не даёт автоматический SUPPORTED: утверждение
+может находиться внутри отрицания, неверного условия или цитаты ложного тезиса.
+Механические проверки отделены от смысловой оценки. Контракт:
+[ANNOTATION_CONTRACT.md](ANNOTATION_CONTRACT.md).
 
-## Repository scope
+## Границы готовности
 
-This public repository contains the executable development mechanism and safety tests. Blind GR006 claims/labels are intentionally not published here.
+Работает локальный цикл проверки текста и фиксации решений. Подходит для
+пилотной сверки спецификаций и AI-отчётов с участием рецензента. Пока нет
+GUI, встроенного PDF/OCR, адаптера модели, проверки текущего статуса,
+сверки нескольких источников и независимо измеренной семантической точности.
+Автономный верификатор ещё не завершён.
 
-## Research stance
+Старые `uars_v06_*` сохранены как исследовательские GR006 development-harnesses.
+Их валидаторы проверяют цитирование, но не доказывают смысловую достаточность;
+для практического assisted workflow используйте `uars.py`. Blind-данные не читались.
 
-UARS is designed around one rule: **do not convert uncertainty into a confident answer merely because an LLM can produce one.**
-
-Status: active research / development prototype.
+См. [ROADMAP.md](ROADMAP.md), [KNOWN_LIMITATIONS.md](KNOWN_LIMITATIONS.md),
+[IMPLEMENTATION_REPORT_2026-10-22.md](IMPLEMENTATION_REPORT_2026-10-22.md).

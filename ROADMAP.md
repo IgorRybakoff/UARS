@@ -1,25 +1,32 @@
 # UARS roadmap
 
-## Next gate
+## Delivered: v0.7 assisted practical MVP
 
-Before any blind evaluation:
+- Arbitrary local UTF-8 source + batch of claims; no GR006 pilot size constraint.
+- SHA-256 integrity, full-text lexical retrieval, reproducible run identity.
+- Optional subprocess judge; mechanically validated, unaccepted proposals.
+- Separate support_label and system_outcome.
+- Reviewer attestations with decisive_span and context_span reconstructed from source.
+- Complete-document review requirement for INSUFFICIENT.
+- JSON + Markdown report and synthetic end-to-end example.
+- Removed automatic support from literal substring matching in the v0.6 baseline.
 
-1. Freeze a single annotation contract mapping `support_label` and system abstention reasons.
-2. Separate `support_label` from `system_outcome` so abstention is not silently counted as `INSUFFICIENT`.
-3. Require both `decisive_span` and `context_span` for positive/negative semantic judgments.
-4. Predeclare metrics: decision coverage, conditional accuracy on decided cases, false support/contradiction, quote quality, abstention reasons, retrieval misses.
-5. Build a fresh open development set outside the existing GR006 blind pool.
-6. Freeze claim text, scope, source URL, raw/norm bytes, SHA-256, retrieval settings, model/digest, prompt and abstention policy before prediction.
-7. Run the new open set once, preserve full JSON and hashes, and treat any subsequent tuning on it as development-only.
+## Next practical acceptance gate
 
-## Blind gate
+Run a real user-selected technical document with 10–20 claims, including
+conditions, negations and missing information. Connect the intended local model
+through the documented adapter contract. Have a domain reviewer inspect every
+proposed span and decision. Record review time, rejected proposals, retrieval
+misses and errors. This is a deployment pilot, not a blind accuracy claim.
 
-The 62 blind GR006 IDs remain unopened until:
+## Autonomous / benchmark gate remains open
 
-- source/split integrity is verified;
-- nonexistent quotes and invalid offsets are mechanically rejected;
-- semantic sufficiency is audited on fresh open data;
-- metrics and quality thresholds are fixed in advance;
-- the mechanism version is frozen.
+1. Fresh open development set outside the exposed pilot and blind pool.
+2. Independent annotations under ANNOTATION_CONTRACT.md, resolved disagreements.
+3. Predeclared thresholds for false support/contradiction and decision coverage;
+   conditional accuracy, quote quality, abstention reasons and retrieval misses.
+4. Freeze source bytes, model/digest, prompt, retrieval and policy before prediction.
+5. Only then evaluate the unopened 62 blind GR006 IDs under a separate protocol.
 
-If the mechanism changes after an evaluation, that result remains development evidence and cannot be reclassified as a blind result.
+Assisted release completion does not establish autonomous semantic reliability.
+Any mechanism tuned after evaluation makes that evaluation development-only.
